@@ -1,18 +1,28 @@
-version: 2.1
 name: CI_DESAFIO5
-on:[pull_request]
-orbs:
-  node: circleci/node@3.0.0
+
+on:
+  pull_request:
+    branches:
+      - 'master'
+  
 jobs:
-  build-and-test:
-    executor:
-      name: node/default
+  test:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x]
+
     steps:
-      - checkout
-      - node/install-packages
-      - run:
-          command: npm run test
-workflows:
-  build-and-test:
-    jobs:
-      - build-and-test
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: npm install
+      run: npm ci
+    - name: npm test
+      run: npm run test:cov -- rxjs-sample
+      env:
+        CI: true
