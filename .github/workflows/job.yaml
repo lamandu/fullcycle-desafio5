@@ -23,6 +23,6 @@ jobs:
     - name: npm install
       run: npm ci
     - name: npm test
-      run: npm run test:cov -- rxjs-sample
+      run: npm test
       env:
         CI: true
