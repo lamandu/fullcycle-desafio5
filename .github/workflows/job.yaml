@@ -1,3 +1,4 @@
+version: 2.1
 name: CI_DESAFIO5
 on:[pull_request]
 orbs:
